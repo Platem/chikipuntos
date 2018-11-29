@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { SignUpLink } from '../SignUp';
+import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import M from 'materialize-css';
 
@@ -13,6 +14,7 @@ const SignInPage = () => (
     <h1 className="center">Sign In</h1>
     <SignInForm />
     <SignUpLink />
+    <PasswordForgetLink />
   </div>
 );
 
