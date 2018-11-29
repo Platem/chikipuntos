@@ -46,6 +46,7 @@ class SignInFormBase extends Component {
   };
 
   onChange = event => {
+    M.updateTextFields();
     this.setState({ [event.target.name]: event.target.value });
   };
 

@@ -3,77 +3,69 @@ import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
 import { withFirebase } from '../Firebase';
+import { AuthUserContext } from '../Session';
 import M from 'materialize-css';
-import SignOutButton from '../SignOut';
 
 import * as ROUTES from '../../constants/routes';
 
-const INITIAL_STATE = {
-  user: null
+const NavigationBase = (props) => {
+  return (
+    <AuthUserContext.Consumer>
+      {authUser =>
+        <nav>
+          <div className="nav-wrapper">
+            <Link className="brand-logo" to={ROUTES.LANDING}>Chikipuntos</Link>
+            <Menu user={authUser} />
+          </div>
+          <UserDropDown user={authUser} firebase={props.firebase} />
+        </nav>
+      }
+    </AuthUserContext.Consumer>
+  );
 }
 
-class NavigationBase extends Component {
+class Menu extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { ...INITIAL_STATE };
   }
 
   componentDidMount() {
-    this.dropdown();
+    M.AutoInit();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    this.dropdown();
-  }
-
-  dropdown() {
-    M.Dropdown.init(document.querySelectorAll('#nav-user-dropdown'));
+    M.AutoInit();
   }
 
   render() {
-    let user = this.props.authUser;
-
-    return (
-      <nav>
-        <div className="nav-wrapper">
-          <Link className="brand-logo" to={ROUTES.LANDING}>Chikipuntos</Link>
-          <Menu user={user} />
-        </div>
-        <UserDropDown user={user} firebase={this.props.firebase} />
-      </nav>
-    );
-  }
-}
-
-const Menu = (props) => {
-  if (props.user) {
-    return (
-      <ul id="nav-mobile" className="right">
-        <li>
-          <Link to={ROUTES.HOME}>Home</Link>
-        </li>
-        <li>
-          <Link to={ROUTES.ADMIN}>Admin</Link>
-        </li>
-        <li>
-          <a id="nav-user-dropdown" className="dropdown-trigger" href="#!" data-target="user-dropdown">
-            {props.user.email}<i className="material-icons right">arrow_drop_down</i>
-          </a>
-        </li>
-      </ul>
-    );
-  } else {
-    return (
-      <ul id="nav-mobile" className="right">
-        <li>
-          <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-        </li>
-        <li>
-          <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-        </li>
-      </ul>
-    );
+    if (this.props.user) {
+      return (
+        <ul id="nav-mobile" className="right">
+          <li>
+            <Link to={ROUTES.HOME}>Home</Link>
+          </li>
+          <li>
+            <Link to={ROUTES.ADMIN}>Admin</Link>
+          </li>
+          <li>
+            <a id="nav-user-dropdown" className="dropdown-trigger" href="#!" data-target="user-dropdown">
+              {this.props.user.email}<i className="material-icons right">arrow_drop_down</i>
+            </a>
+          </li>
+        </ul>
+      );
+    } else {
+      return (
+        <ul id="nav-mobile" className="right">
+          <li>
+            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+          </li>
+          <li>
+            <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
+          </li>
+        </ul>
+      );
+    }
   }
 }
 
