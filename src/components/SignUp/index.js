@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
-
 import { SignInLink } from '../SignIn';
 import { withFirebase } from '../Firebase';
 import M from 'materialize-css';
