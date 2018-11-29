@@ -7,6 +7,7 @@ import { withFirebase } from '../Firebase';
 import M from 'materialize-css';
 
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 const SignUpPage = () => (
   <div className="container row">
@@ -33,9 +34,20 @@ class SignUpFormBase extends Component {
 
   onSubmit = event => {
     const { username, email, password } = this.state;
+    const roles = [ROLES.USER];
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, password)
+      .then(authUser => {
+        // Create a user in your Firebase realtime database
+        return this.props.firebase
+          .user(authUser.user.uid)
+          .set({
+            username,
+            email,
+            roles,
+          });
+      })
       .then(authUser => {
         this.setState({ ...INITIAL_STATE });
         this.props.history.push(ROUTES.HOME);

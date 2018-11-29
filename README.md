@@ -15,3 +15,6 @@ Setup:
 To run:
 - Dev mode: `npm start`
 - Build: `npm run build`
+
+Tutorials:
+- [A Firebase in React Tutorial for Beginners](https://www.robinwieruch.de/complete-firebase-authentication-react-tutorial/)

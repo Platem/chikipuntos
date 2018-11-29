@@ -25,10 +25,6 @@ const NavigationBase = (props) => {
 }
 
 class Menu extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     M.AutoInit();
   }
