@@ -51,8 +51,8 @@ class AdminPageBase extends Component {
     return (
       <div className="container row">
         <h1 className="center">Admin</h1>
-        {user.roles.includes(ROLES.ADMIN) ?
-          (loading ? <p className="center">Loading ...</p> : <UserList users={users} />) :
+        {user.roles.includes(ROLES.APP_ADMIN) ?
+          (loading ? <p className="center">Loading ...</p> : <UserList users={users} firebase={this.props.firebase} />) :
           <p className="center">Restricted access ...</p>
         }
       </div>
@@ -60,17 +60,36 @@ class AdminPageBase extends Component {
   }
 }
 
-const UserList = ({ users }) => (
-  <ul className="collection">
-    {users.map(user => (
-      <li key={user.uid} className="collection-item avatar">
-        <img src="images/.jpg" alt="" className="circle"></img>
-        <span className="title">{user.username} ({user.email})</span>
-        <p className="id">{user.uid}</p>
-        <a href="#!" className="secondary-content"><i className="material-icons">grade</i></a>
-      </li>
-    ))}
-  </ul>
+const UserList = ({ users, firebase }) => (
+  <table className="highlight responsive-table">
+    <thead>
+      <tr>
+        <th>username</th>
+        <th>email</th>
+        {/* <th>active</th>
+        <th>actions</th> */}
+      </tr>
+    </thead>
+    <tbody>
+      {users.map(user => (
+        <tr key={user.uid}>
+          <td>{user.username}</td>
+          <td>{user.email}</td>
+          {/* <td>
+            <div className="switch">
+              <label htmlFor="">
+                <input checked={user.active} type="checkbox" />
+                <span className="lever"></span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <a className="waves-effect waves-light btn red" onClick={() => firebase.removeUser(user.uid)}><i className="material-icons">delete</i></a>
+          </td> */}
+        </tr>
+      ))}
+    </tbody>
+  </table>
 );
 
 const condition = authUser => !!authUser;

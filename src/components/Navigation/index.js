@@ -12,31 +12,51 @@ const NavigationBase = (props) => {
   return (
     <AuthUserContext.Consumer>
       {authUser =>
-        <nav>
-          <div className="nav-wrapper">
-            <Link className="brand-logo" to={ROUTES.LANDING}>Chikipuntos</Link>
-            <Menu user={authUser} />
-          </div>
-          <UserDropDown user={authUser} firebase={props.firebase} />
-        </nav>
+        <div>
+          <nav className="blue-grey">
+            <div className="nav-wrapper">
+              <Link className="brand-logo" to={ROUTES.LANDING}>Chikipuntos</Link>
+              <a href="#" data-target="nav-mobile" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+              <Menu mobile={false} user={authUser} />
+            </div>
+            <UserDropDown mobile={false} user={authUser} firebase={props.firebase} />
+          </nav>
+          <Menu mobile={true} user={authUser} />
+          <UserDropDown mobile={true} user={authUser} firebase={props.firebase} />
+        </div>
       }
     </AuthUserContext.Consumer>
   );
 }
 
+function updateSidenav() {
+  var elems = document.querySelectorAll('.sidenav');
+  var instances = M.Sidenav.init(elems);
+}
+
+function updateDropdown() {
+  var elems = document.querySelectorAll('.dropdown-trigger');
+  var instances = M.Dropdown.init(elems, {
+    coverTrigger: false,
+    hover: true,
+  });
+}
+
 class Menu extends Component {
   componentDidMount() {
-    M.AutoInit();
+    updateDropdown();
+    updateSidenav();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    M.AutoInit();
+    updateDropdown();
+    updateSidenav();
   }
 
   render() {
     if (this.props.user) {
       return (
-        <ul id="nav-mobile" className="right">
+        <ul id={this.props.mobile ? "nav-mobile" : "nav-main"} className={this.props.mobile ? "sidenav" : "right hide-on-med-and-down"}>
           <li>
             <Link to={ROUTES.HOME}>Home</Link>
           </li>
@@ -44,7 +64,7 @@ class Menu extends Component {
             <Link to={ROUTES.ADMIN}>Admin</Link>
           </li>
           <li>
-            <a id="nav-user-dropdown" className="dropdown-trigger" href="#!" data-target="user-dropdown">
+            <a id={this.props.mobile ? "nav-mobile-user-dropdown" : "nav-main-user-dropdown"} className="dropdown-trigger" href="#!" data-target={this.props.mobile ? "mobile-user-dropdown" : "main-user-dropdown"}>
               {this.props.user.email}<i className="material-icons right">arrow_drop_down</i>
             </a>
           </li>
@@ -52,7 +72,7 @@ class Menu extends Component {
       );
     } else {
       return (
-        <ul id="nav-mobile" className="right">
+        <ul id={this.props.sidenav ? "nav-mobile" : "nav-main"} className={this.props.mobile ? "sidenav" : "right hide-on-med-and-down"}>
           <li>
             <Link to={ROUTES.SIGN_IN}>Sign In</Link>
           </li>
@@ -67,7 +87,7 @@ class Menu extends Component {
 
 const UserDropDown = (props) => {
   return (
-    <ul id="user-dropdown" className="dropdown-content">
+    <ul id={props.mobile ? "mobile-user-dropdown" : "main-user-dropdown"} className="dropdown-content">
       <li><Link to={ROUTES.ACCOUNT}>Account</Link></li>
       <li className="divider"></li>
       <li><a href="#!" onClick={props.firebase.doSignOut}>Log Out</a></li>
