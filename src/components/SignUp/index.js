@@ -47,6 +47,7 @@ class SignUpFormBase extends Component {
             email,
             roles,
             active: true,
+            groups: [],
           });
       })
       .then(authUser => {

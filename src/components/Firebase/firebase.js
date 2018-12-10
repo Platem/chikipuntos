@@ -41,6 +41,10 @@ class Firebase {
   removeUser = uid => {
     alert(uid)
   }
+
+  group = gid => this.db.ref(`groups/${gid}`);
+
+  groups = () => this.db.ref('groups');
 }
 
 export default Firebase;

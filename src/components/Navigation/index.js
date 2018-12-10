@@ -16,7 +16,7 @@ const NavigationBase = (props) => {
           <nav className="blue-grey">
             <div className="nav-wrapper">
               <Link className="brand-logo" to={ROUTES.LANDING}>Chikipuntos</Link>
-              <a href="#" data-target="nav-mobile" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+              <a href="#!" data-target="nav-mobile" className="sidenav-trigger"><i className="material-icons">menu</i></a>
               <Menu mobile={false} user={authUser} />
             </div>
             <UserDropDown mobile={false} user={authUser} firebase={props.firebase} />
@@ -31,12 +31,12 @@ const NavigationBase = (props) => {
 
 function updateSidenav() {
   var elems = document.querySelectorAll('.sidenav');
-  var instances = M.Sidenav.init(elems);
+  M.Sidenav.init(elems);
 }
 
 function updateDropdown() {
   var elems = document.querySelectorAll('.dropdown-trigger');
-  var instances = M.Dropdown.init(elems, {
+  M.Dropdown.init(elems, {
     coverTrigger: false,
     hover: true,
   });
